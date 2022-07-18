@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.YupicBase" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.RocketEngineBase" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorA</item>
         <item name="colorPrimaryVariant">@color/colorC</item>
@@ -14,18 +14,18 @@
 
     </style>
 
-    <style name="Theme.Yupic" parent="Theme.YupicBase">
+    <style name="Theme.RocketEngine" parent="Theme.RocketEngineBase">
 
         <!-- Customize your theme here. -->
 
     </style>
 
-    <style name="Theme.Yupic.NoActionBar">
+    <style name="Theme.RocketEngine.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Yupic.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.RocketEngine.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.Yupic.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.RocketEngine.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
