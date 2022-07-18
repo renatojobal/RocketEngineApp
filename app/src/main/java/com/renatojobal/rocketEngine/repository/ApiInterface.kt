@@ -1,6 +1,6 @@
 package com.renatojobal.rocketEngine.repository
 
-import com.renatojobal.rocketEngine.model.Project
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -8,18 +8,22 @@ import retrofit2.http.GET
 
 interface ApiInterface {
 
-    @GET("core/projects/")
-    fun getProjects() : Call<List<Project>>
+    @GET("annotate")
+    fun annotate() : Call<JsonObject>
 
+    @GET("spot")
+    fun spot() : Call<JsonObject>
 
+    @GET("candidate")
+    fun candidate() : Call<JsonObject>
     companion object {
 
-        const val ENTERPRISES_URL = "http://10.0.2.2:8000/api/"
+        private const val BASE_URL = "https://api.dbpedia-spotlight.org/en/"
 
         fun create() : ApiInterface {
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(ENTERPRISES_URL)
+                .baseUrl(BASE_URL)
                 .build()
             return retrofit.create(ApiInterface::class.java)
 

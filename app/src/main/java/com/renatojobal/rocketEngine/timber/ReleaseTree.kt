@@ -5,14 +5,13 @@ import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
-
+const val MAX_LOG_LENGTH = 4000
 /**
  * Timber tree using in the release variant
  */
 class ReleaseTree : Timber.Tree() {
 
 
-    private val MAX_LOG_LENGTH = 4000
 
 
     /**
