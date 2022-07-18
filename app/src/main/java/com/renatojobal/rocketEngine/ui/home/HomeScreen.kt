@@ -35,13 +35,12 @@ import com.renatojobal.rocketEngine.R
 import com.renatojobal.rocketEngine.SharedViewModel
 import com.renatojobal.rocketEngine.model.Category
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
-import timber.log.Timber
 
 @Composable
 fun HomeScreen(sharedViewModel: SharedViewModel, onOffsetClicked: () -> Unit) {
 
 
-    val targetCategories by sharedViewModel.categories.observeAsState()
+    val targetCategories by sharedViewModel.entities.observeAsState()
     var selectedCategory by remember { (mutableStateOf(targetCategories?.get(0))) }
 
 
@@ -84,7 +83,10 @@ fun HomeScreen(sharedViewModel: SharedViewModel, onOffsetClicked: () -> Unit) {
 
             ExpandableSearchView(
                 searchDisplay = "",
-                onSearchDisplayChanged = {},
+                onSearchDisplayChanged = {
+                     // Call to the shared view model in order to search
+                     sharedViewModel.handleSearch(it)
+                },
                 expandedInitially = true,
                 onSearchDisplayClosed = {}
             )
@@ -222,7 +224,7 @@ fun ActivitiesListPresenter(
 ) {
 
 
-    val targetCategories by sharedViewModel.categories.observeAsState()
+    val targetCategories by sharedViewModel.entities.observeAsState()
 
 
     Text(
