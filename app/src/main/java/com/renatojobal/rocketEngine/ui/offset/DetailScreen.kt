@@ -60,9 +60,13 @@ fun EntityDetailPresenter(entity: Entity) {
         PropertyLabeledPresenter(label = "Uri", content = entity.uri)
         Text(text = "Types:")
         entity.getTypesAsList().forEach { safeType ->
-            PropertyLabeledPresenter(
-                label = safeType.split(":")[0],
-                content = safeType.split(":")[1])
+
+                PropertyLabeledPresenter(
+                    label = safeType.split(":")[0],
+                    content = safeType.split(":")[1])
+
+
+
         }
 
 

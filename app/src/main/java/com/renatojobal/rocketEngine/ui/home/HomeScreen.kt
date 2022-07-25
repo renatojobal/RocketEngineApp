@@ -101,6 +101,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, onResultSelected: () -> Unit) {
                 selectedCategory = selectedEntity){ wantedEntity ->
                 selectedEntity = wantedEntity
                 sharedViewModel.selectedEntity.value = wantedEntity
+                sharedViewModel.getEntityInfo()
                 onResultSelected()
             }
         }

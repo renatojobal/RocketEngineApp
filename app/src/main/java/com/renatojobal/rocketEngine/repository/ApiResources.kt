@@ -6,36 +6,36 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ApiInterface {
+interface ApiResources {
 
-    @GET("annotate")
-    fun annotate(
+    @GET("{resourceType}/{resourceName}")
+    fun getResource(
         @Header("accept") accept : String = "application/json",
-        @Query("text") rawText: String
+        @Path("resourceType") resourceType: String,
+        @Path("resourceName") resourceName: String
+    ): Call<JsonObject>
 
-    ): Call<AnnotateResponse>
 
-    @GET("spot")
-    fun spot() : Call<JsonObject>
 
-    @GET("candidate")
-    fun candidate() : Call<JsonObject>
     companion object {
 
-        private const val BASE_URL = "https://api.dbpedia-spotlight.org/en/"
+        private const val BASE_URL = "http://dbpedia.org/"
 
-        fun create() : ApiInterface {
+        fun create() : ApiResources {
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .build()
-            return retrofit.create(ApiInterface::class.java)
+            return retrofit.create(ApiResources::class.java)
 
         }
+
+
     }
+
 
 
 }
