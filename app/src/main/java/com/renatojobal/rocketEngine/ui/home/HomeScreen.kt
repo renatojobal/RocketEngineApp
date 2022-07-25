@@ -35,7 +35,7 @@ import com.renatojobal.rocketEngine.repository.Entity
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
 
 @Composable
-fun HomeScreen(sharedViewModel: SharedViewModel, onOffsetClicked: () -> Unit) {
+fun HomeScreen(sharedViewModel: SharedViewModel, onResultSelected: () -> Unit) {
 
 
     val targetEntities by sharedViewModel.entities.observeAsState()
@@ -100,6 +100,8 @@ fun HomeScreen(sharedViewModel: SharedViewModel, onOffsetClicked: () -> Unit) {
                 sharedViewModel = sharedViewModel,
                 selectedCategory = selectedEntity){ wantedEntity ->
                 selectedEntity = wantedEntity
+                sharedViewModel.selectedEntity.value = wantedEntity
+                onResultSelected()
             }
         }
 
@@ -222,7 +224,7 @@ fun EntityListPresenter(
 
 
     Text(
-            text = "Results",
+        text = "Results",
         modifier = Modifier
             .padding(4.dp),
         style = MaterialTheme.typography.h5

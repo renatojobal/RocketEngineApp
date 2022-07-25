@@ -1,27 +1,17 @@
 package com.renatojobal.rocketEngine.ui.offset
 
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.renatojobal.rocketEngine.R
 import com.renatojobal.rocketEngine.SharedViewModel
+import com.renatojobal.rocketEngine.repository.Entity
+import com.renatojobal.rocketEngine.ui.dummyEntity
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
 import com.renatojobal.rocketEngine.ui.trimDecimals
 
@@ -31,23 +21,59 @@ fun DetailScreen(sharedViewModel: SharedViewModel) {
 
     // Show detail of the selected item
 
+    val selectedEntity = sharedViewModel.selectedEntity.observeAsState()
 
-
+//    EntityDetailPresenter(entity = dummyEntity)
+    selectedEntity.value?.let{ safeEntity ->
+        EntityDetailPresenter(entity = safeEntity)
+    }
 
 
 }
-
 
 @Composable
-fun EntityDetailPresenter() {
+fun PropertyLabeledPresenter(label: String, content: String) {
+    Row(modifier = Modifier.padding(10.dp)) {
+        Text(text = label)
+        Text(text = content, modifier = Modifier.padding(start = 10.dp))
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun PropertyLabeledPreview() {
+    RocketEngineTheme {
+        Column {
+            dummyEntity.getTypesAsList().forEach {
+                PropertyLabeledPresenter(label = "Types", content = it)
+            }
+        }
 
+
+    }
 }
 
-@Preview
+@Composable
+fun EntityDetailPresenter(entity: Entity) {
+    Column(
+        modifier = Modifier.padding(12.dp)
+    ) {
+        PropertyLabeledPresenter(label = "Uri", content = entity.uri)
+        Text(text = "Types:")
+        entity.getTypesAsList().forEach { safeType ->
+            PropertyLabeledPresenter(
+                label = safeType.split(":")[0],
+                content = safeType.split(":")[1])
+        }
+
+
+    }
+}
+
+@Preview(showBackground = true)
 @Composable
 fun EntityDetailPreview() {
     RocketEngineTheme {
-
+        EntityDetailPresenter(dummyEntity)
     }
 }
 

@@ -90,11 +90,11 @@ fun RocketEngineNavHost(
     ) {
 
         composable(route = BottomNavigationItem.Home.route) {
-            HomeScreen(sharedViewModel) { navHostController.navigate(BottomNavigationItem.Offset.route) }
+            HomeScreen(sharedViewModel) { navHostController.navigate(BottomNavigationItem.Detail.route) }
 
         }
 
-        composable(route = BottomNavigationItem.Offset.route) {
+        composable(route = BottomNavigationItem.Detail.route) {
             DetailScreen(sharedViewModel = sharedViewModel)
 
         }

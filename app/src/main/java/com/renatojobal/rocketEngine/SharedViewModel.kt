@@ -19,6 +19,8 @@ class SharedViewModel(
     private val _entities: MutableLiveData<List<Entity>?> = MutableLiveData(null)
     val entities: LiveData<List<Entity>?> = _entities
 
+    val selectedEntity: MutableLiveData<Entity?> = MutableLiveData(null)
+
 
     /**
      * Dark theme
