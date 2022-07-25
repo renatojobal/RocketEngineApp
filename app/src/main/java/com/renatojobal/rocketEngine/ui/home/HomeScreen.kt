@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.renatojobal.rocketEngine.R
 import com.renatojobal.rocketEngine.SharedViewModel
-import com.renatojobal.rocketEngine.repository.Resource
+import com.renatojobal.rocketEngine.repository.Entity
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
 
 @Composable
@@ -154,9 +154,9 @@ fun CircularProgressPreview() {
 
 @Composable
 fun EntityChip(
-    presentingEntity: Resource,
-    selectedEntity: Resource?,
-    onSelectedEntity: (Resource) -> Unit
+    presentingEntity: Entity,
+    selectedEntity: Entity?,
+    onSelectedEntity: (Entity) -> Unit
 ) {
 
     val itemModifier: Modifier = if (selectedEntity == presentingEntity) {
@@ -213,8 +213,8 @@ fun EntityChip(
 @Composable
 fun EntityListPresenter(
     sharedViewModel: SharedViewModel,
-    selectedCategory: Resource?,
-    onSelectedCategory: (Resource) -> Unit
+    selectedCategory: Entity?,
+    onSelectedCategory: (Entity) -> Unit
 ) {
 
 

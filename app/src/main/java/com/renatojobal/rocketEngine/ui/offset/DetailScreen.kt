@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.renatojobal.rocketEngine.R
 import com.renatojobal.rocketEngine.SharedViewModel
-import com.renatojobal.rocketEngine.model.Project
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
 import com.renatojobal.rocketEngine.ui.trimDecimals
 

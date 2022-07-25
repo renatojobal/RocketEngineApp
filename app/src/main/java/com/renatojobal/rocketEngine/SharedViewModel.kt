@@ -3,11 +3,9 @@ package com.renatojobal.rocketEngine
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.JsonObject
-import com.renatojobal.rocketEngine.model.*
 import com.renatojobal.rocketEngine.repository.AnnotateResponse
 import com.renatojobal.rocketEngine.repository.ApiInterface
-import com.renatojobal.rocketEngine.repository.Resource
+import com.renatojobal.rocketEngine.repository.Entity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,8 +16,8 @@ class SharedViewModel(
     private val api : ApiInterface = ApiInterface.create()
 ) : ViewModel() {
 
-    private val _entities: MutableLiveData<List<Resource>?> = MutableLiveData(null)
-    val entities: LiveData<List<Resource>?> = _entities
+    private val _entities: MutableLiveData<List<Entity>?> = MutableLiveData(null)
+    val entities: LiveData<List<Entity>?> = _entities
 
 
     /**
@@ -44,7 +42,7 @@ class SharedViewModel(
                 Timber.d("Got it")
 
                 // Populate categories list
-                _entities.value = response.body()?.resources
+                _entities.value = response.body()?.entities
             }
 
             override fun onFailure(call: Call<AnnotateResponse>, t: Throwable) {

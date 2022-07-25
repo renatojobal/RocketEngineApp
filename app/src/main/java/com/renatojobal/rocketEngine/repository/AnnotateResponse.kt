@@ -23,13 +23,13 @@ data class AnnotateResponse(
     val policy: String,
 
     @SerializedName("Resources")
-    val resources: List<Resource>? = null,
+    val entities: List<Entity>? = null,
     // @JsonIgnore
-    val additionalProperties: Map<String, Object> = HashMap<String, Object>()
+    val additionalProperties: Map<String, Object> = HashMap()
 
 )
 
-data class Resource(
+data class Entity(
 
     @SerializedName("@URI")
     val uri: String,
@@ -55,7 +55,7 @@ data class Resource(
     var thumbnail: String? = null, // An emoji
 
     //@JsonIgnore
-    val additionalProperties: Map<String, Object> = HashMap<String, Object>()
+    val additionalProperties: Map<String, Object> = HashMap()
 
 
 ){
