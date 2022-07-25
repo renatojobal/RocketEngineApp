@@ -22,8 +22,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.renatojobal.rocketEngine.ui.BottomNavigationItem
-import com.renatojobal.rocketEngine.ui.HomeScreen
-import com.renatojobal.rocketEngine.ui.offset.OffsetScreen
+import com.renatojobal.rocketEngine.ui.home.HomeScreen
+import com.renatojobal.rocketEngine.ui.offset.DetailScreen
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
 
 
@@ -95,7 +95,7 @@ fun RocketEngineNavHost(
         }
 
         composable(route = BottomNavigationItem.Offset.route) {
-            OffsetScreen(sharedViewModel = sharedViewModel)
+            DetailScreen(sharedViewModel = sharedViewModel)
 
         }
     }

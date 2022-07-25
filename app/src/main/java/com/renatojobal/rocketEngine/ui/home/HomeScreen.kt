@@ -1,8 +1,6 @@
-package com.renatojobal.rocketEngine.ui
+package com.renatojobal.rocketEngine.ui.home
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,28 +31,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.renatojobal.rocketEngine.R
 import com.renatojobal.rocketEngine.SharedViewModel
-import com.renatojobal.rocketEngine.model.Category
+import com.renatojobal.rocketEngine.repository.Resource
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
 
 @Composable
 fun HomeScreen(sharedViewModel: SharedViewModel, onOffsetClicked: () -> Unit) {
 
 
-    val targetCategories by sharedViewModel.entities.observeAsState()
-    var selectedCategory by remember { (mutableStateOf(targetCategories?.get(0))) }
+    val targetEntities by sharedViewModel.entities.observeAsState()
+    var selectedEntity by remember { (mutableStateOf(targetEntities?.get(0))) }
 
 
     val animDuration = 1000
     val animDelay = 0
 
 
-    val currentPercentage by animateFloatAsState(
-        targetValue = (selectedCategory?.percentage ?: 0.0).toFloat(),
-        animationSpec = tween(
-            durationMillis = animDuration,
-            delayMillis = animDelay
-        )
-    )
 
 
     BoxWithConstraints(
@@ -105,6 +96,11 @@ fun HomeScreen(sharedViewModel: SharedViewModel, onOffsetClicked: () -> Unit) {
 //                selectedCategory = wantedCategory
 //
 //            }
+            EntityListPresenter(
+                sharedViewModel = sharedViewModel,
+                selectedCategory = selectedEntity){ wantedEntity ->
+                selectedEntity = wantedEntity
+            }
         }
 
     }
@@ -157,13 +153,13 @@ fun CircularProgressPreview() {
 }
 
 @Composable
-fun ActivityItem(
-    presentingCategory: Category,
-    selectedCategory: Category?,
-    onSelectedCategory: (Category) -> Unit
+fun EntityChip(
+    presentingEntity: Resource,
+    selectedEntity: Resource?,
+    onSelectedEntity: (Resource) -> Unit
 ) {
 
-    val itemModifier: Modifier = if (selectedCategory == presentingCategory) {
+    val itemModifier: Modifier = if (selectedEntity == presentingEntity) {
         Modifier
             .background(
                 color = MaterialTheme.colors.surface,
@@ -175,7 +171,7 @@ fun ActivityItem(
             .fillMaxWidth()
     }
 
-    Box(
+    BoxWithConstraints(
         modifier = itemModifier
     ) {
         Row(
@@ -185,71 +181,69 @@ fun ActivityItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
+
             Row(
                 horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
                 Text(
-                    text = (presentingCategory.thumbnail ?: "\uD83C\uDFED"),
-                    modifier = Modifier.clickable { onSelectedCategory(presentingCategory) })
+                    text = (presentingEntity.thumbnail ?: "\uD83C\uDFED"),
+                    modifier = Modifier.clickable { onSelectedEntity(presentingEntity) })
                 Text(
                     modifier = Modifier
                         .padding(start = 16.dp)
-                        .clickable { onSelectedCategory(presentingCategory) },
-                    text = presentingCategory.title
+                        .clickable { onSelectedEntity(presentingEntity) },
+                    text = presentingEntity.uri
                 )
-            }
 
-            Text(
-                text = presentingCategory.categoryCarbonFootprintKg.trimDecimals(),
-                modifier = Modifier.clickable { onSelectedCategory(presentingCategory) })
+            }
         }
     }
 
 }
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun ActivityItemPreview() {
+//    val dummyActivity = Resource(percentage = 0.36, title = "Transport", thumbnail = "\uD83C\uDFED")
+//    ActivityItem(dummyActivity, Resource()) {}
+//}
 
-@Preview(showBackground = true)
+
 @Composable
-fun ActivityItemPreview() {
-    val dummyActivity = Category(percentage = 0.36, title = "Transport", thumbnail = "\uD83C\uDFED")
-    ActivityItem(dummyActivity, Category()) {}
-}
-
-
-@Composable
-fun ActivitiesListPresenter(
+fun EntityListPresenter(
     sharedViewModel: SharedViewModel,
-    selectedCategory: Category?,
-    onSelectedCategory: (Category) -> Unit
+    selectedCategory: Resource?,
+    onSelectedCategory: (Resource) -> Unit
 ) {
 
 
-    val targetCategories by sharedViewModel.entities.observeAsState()
+    val targetEntities by sharedViewModel.entities.observeAsState()
 
 
     Text(
-        text = "Activities",
+            text = "Results",
         modifier = Modifier
             .padding(4.dp),
         style = MaterialTheme.typography.h5
     )
-    targetCategories?.let { listCategories ->
+    targetEntities?.let { listCategories ->
         if (listCategories.isNotEmpty()) {
             LazyColumn {
                 items(listCategories.size) { index ->
-                    ActivityItem(
-                        presentingCategory = listCategories[index],
-                        selectedCategory = selectedCategory
+                    EntityChip(
+                        presentingEntity = listCategories[index],
+                        selectedEntity = selectedCategory
                     ) {
                         onSelectedCategory(it)
                     }
                 }
             }
         } else {
-            Text(text = "No hay actividades registradas aún")
+            Text(text = "Nothing to show \uD83E\uDD32")
         }
     } ?: run {
-        Text(text = "No hay actividades registradas aún")
+        Text(text = "Nothing to show \uD83E\uDD32")
     }
 
 

@@ -7,6 +7,7 @@ import com.google.gson.JsonObject
 import com.renatojobal.rocketEngine.model.*
 import com.renatojobal.rocketEngine.repository.AnnotateResponse
 import com.renatojobal.rocketEngine.repository.ApiInterface
+import com.renatojobal.rocketEngine.repository.Resource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,11 +18,9 @@ class SharedViewModel(
     private val api : ApiInterface = ApiInterface.create()
 ) : ViewModel() {
 
-    private val _projectsList: MutableLiveData<List<Project>> = MutableLiveData(listOf())
-    val projectsList: LiveData<List<Project>> = _projectsList
+    private val _entities: MutableLiveData<List<Resource>?> = MutableLiveData(null)
+    val entities: LiveData<List<Resource>?> = _entities
 
-    private val _entities: MutableLiveData<List<Category>?> = MutableLiveData(null)
-    val entities: LiveData<List<Category>?> = _entities
 
     /**
      * Dark theme
@@ -42,7 +41,10 @@ class SharedViewModel(
         request.enqueue(object : Callback<AnnotateResponse>{
             override fun onResponse(call: Call<AnnotateResponse>, response: Response<AnnotateResponse>) {
                 Timber.d("Response ${response.body().toString()}")
-                Timber.d("Got itL")
+                Timber.d("Got it")
+
+                // Populate categories list
+                _entities.value = response.body()?.resources
             }
 
             override fun onFailure(call: Call<AnnotateResponse>, t: Throwable) {
