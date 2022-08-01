@@ -25,7 +25,8 @@ class SharedViewModel(
     val fullEntityInfo: MutableLiveData<JsonObject?> = MutableLiveData(null)
     val relatedEntities : MutableLiveData<List<String>> = MutableLiveData(null)
 
-
+    private var _receivedRdf : MutableLiveData<JsonObject> = MutableLiveData(null)
+    val receivedRdf : LiveData<JsonObject> = _receivedRdf
 
     /**
      * Dark theme
@@ -60,12 +61,13 @@ class SharedViewModel(
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 //Timber.d("Response ${response.body().toString()}")
                 // Populate categories list
-                val responseJSON = response.body()?.asJsonObject?.get("result_rdf")
-                _entities.value
+                _receivedRdf.value = response.body()?.asJsonObject
+                Timber.d("Text")
+
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Timber.e(t, "Error while calling spotlight api")
+                Timber.e(t, "Error while calling flask api")
             }
         })
 

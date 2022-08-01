@@ -24,6 +24,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.renatojobal.rocketEngine.ui.BottomNavigationItem
 import com.renatojobal.rocketEngine.ui.home.HomeScreen
 import com.renatojobal.rocketEngine.ui.offset.DetailScreen
+import com.renatojobal.rocketEngine.ui.rawview.RawView
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
 
 
@@ -90,12 +91,22 @@ fun RocketEngineNavHost(
     ) {
 
         composable(route = BottomNavigationItem.Home.route) {
-            HomeScreen(sharedViewModel) { navHostController.navigate(BottomNavigationItem.Detail.route) }
+            HomeScreen(
+                sharedViewModel = sharedViewModel,
+                onRdfSelected = { navHostController.navigate(BottomNavigationItem.RawView.route) },
+                onGraphSelected = { navHostController.navigate(BottomNavigationItem.RawView.route) },
+                onResultSelected = { navHostController.navigate(BottomNavigationItem.Detail.route) }
+            )
 
         }
 
         composable(route = BottomNavigationItem.Detail.route) {
             DetailScreen(sharedViewModel = sharedViewModel)
+
+        }
+
+        composable(route = BottomNavigationItem.RawView.route) {
+            RawView(sharedViewModel = sharedViewModel)
 
         }
     }

@@ -35,7 +35,7 @@ import com.renatojobal.rocketEngine.repository.Entity
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
 
 @Composable
-fun HomeScreen(sharedViewModel: SharedViewModel, onResultSelected: () -> Unit) {
+fun HomeScreen(sharedViewModel: SharedViewModel, onRdfSelected: () -> Unit, onGraphSelected: () -> Unit, onResultSelected: () -> Unit) {
 
 
     val targetEntities by sharedViewModel.entities.observeAsState()
@@ -96,6 +96,22 @@ fun HomeScreen(sharedViewModel: SharedViewModel, onResultSelected: () -> Unit) {
 //                selectedCategory = wantedCategory
 //
 //            }
+
+
+            Row {
+                Box(modifier = Modifier.clickable {
+                    onRdfSelected()
+                }) {
+                    Text(text = "View RDF")
+                }
+                Box(modifier = Modifier.clickable {
+                    onGraphSelected()
+                }) {
+                    Text(text = "View Graph")
+                }
+            }
+
+
             EntityListPresenter(
                 sharedViewModel = sharedViewModel,
                 selectedCategory = selectedEntity){ wantedEntity ->

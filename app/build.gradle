@@ -39,6 +39,7 @@ android {
     buildFeatures {
         compose true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
         kotlinCompilerVersion '1.5.21'
