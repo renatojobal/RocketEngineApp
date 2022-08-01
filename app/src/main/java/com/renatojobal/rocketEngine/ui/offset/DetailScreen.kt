@@ -100,9 +100,15 @@ fun EntityDetailPresenter(entity: Entity, sharedViewModel: SharedViewModel) {
         Text(text = "Types:")
         entity.getTypesAsList().forEach { safeType ->
 
-                PropertyLabeledPresenter(
-                    label = safeType.split(":")[0],
-                    content = safeType.split(":")[1])
+                if (safeType.split(":").getOrNull(0) != null){
+                    if (safeType.split(":").getOrNull(1) != null){
+                        PropertyLabeledPresenter(
+                            label = safeType.split(":")[0],
+                            content = safeType.split(":")[1])
+                    }
+                }
+
+
 
 
 

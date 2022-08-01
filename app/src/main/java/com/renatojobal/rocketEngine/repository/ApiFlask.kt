@@ -1,5 +1,6 @@
 package com.renatojobal.rocketEngine.repository
 
+import android.media.Image
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -24,6 +25,11 @@ interface ApiFlask {
         @Query("prefix") prefix : String = "fred:",
         @Query("namespace") namespace : String = "http://www.ontologydesignpatterns.org/ont/fred/domain.owl#",
     ) : Call<JsonObject>
+
+    @GET("image_rdf")
+    fun image(
+        @Query("rdf") text : String,
+    ) : Call<Image>
 
 
 

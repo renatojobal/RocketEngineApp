@@ -1,6 +1,7 @@
 package com.renatojobal.rocketEngine.ui.rawview
 
 import android.widget.ScrollView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +15,17 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.renatojobal.rocketEngine.SharedViewModel
 
 
@@ -26,6 +33,7 @@ import com.renatojobal.rocketEngine.SharedViewModel
 fun RawView(sharedViewModel: SharedViewModel) {
 
     val targetText by sharedViewModel.receivedRdf.observeAsState()
+    val targetImage by sharedViewModel.imageGraph.observeAsState()
 
     val clipboardManager: ClipboardManager = LocalClipboardManager.current
     var text by remember { (mutableStateOf(targetText.toString() ?: "")) }
@@ -62,6 +70,15 @@ fun RawView(sharedViewModel: SharedViewModel) {
         .fillMaxSize()
         .padding(30.dp)
         .verticalScroll(rememberScrollState())) {
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data("http://10.0.2.2:5000/image_rdf?text=${text}")
+                .crossfade(true)
+                .build(),
+            contentDescription = "image",
+            contentScale = ContentScale.Crop
+        )
+
         Button(onClick = {
             clipboardManager.setText(AnnotatedString((text)))
         }) {
@@ -71,6 +88,9 @@ fun RawView(sharedViewModel: SharedViewModel) {
 
 
     }
+
+
+
 
 
 

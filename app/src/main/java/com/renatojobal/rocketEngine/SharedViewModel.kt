@@ -1,5 +1,6 @@
 package com.renatojobal.rocketEngine
 
+import android.media.Image
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,6 +28,9 @@ class SharedViewModel(
 
     private var _receivedRdf : MutableLiveData<JsonObject> = MutableLiveData(null)
     val receivedRdf : LiveData<JsonObject> = _receivedRdf
+
+    private var _imageGraph : MutableLiveData<Image> = MutableLiveData(null)
+    val imageGraph : LiveData<Image> = _imageGraph
 
     /**
      * Dark theme
@@ -70,6 +74,25 @@ class SharedViewModel(
                 Timber.e(t, "Error while calling flask api")
             }
         })
+
+//        val requestImage = apiFlask.image(
+//            text = rawText
+//        )
+//        requestImage.enqueue(object : Callback<Image>{
+//            override fun onResponse(call: Call<Image>, response: Response<Image>) {
+//                //Timber.d("Response ${response.body().toString()}")
+//                // Populate categories list
+//                _imageGraph.value = response.body()
+//                Timber.d("Text")
+//
+//            }
+//
+//            override fun onFailure(call: Call<Image>, t: Throwable) {
+//                Timber.e(t, "Error while calling flask api fro get image")
+//            }
+//        })
+
+
 
     }
 
