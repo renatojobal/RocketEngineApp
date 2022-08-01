@@ -105,4 +105,7 @@ dependencies {
     /** UI */
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
 
+    /** Images fro jetpack compose */
+    implementation("io.coil-kt:coil-compose:2.1.0")
+
 }

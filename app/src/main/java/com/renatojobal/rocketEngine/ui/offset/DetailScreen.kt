@@ -1,19 +1,28 @@
 package com.renatojobal.rocketEngine.ui.offset
 
 
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.renatojobal.rocketEngine.SharedViewModel
 import com.renatojobal.rocketEngine.repository.Entity
 import com.renatojobal.rocketEngine.ui.dummyEntity
 import com.renatojobal.rocketEngine.ui.theme.RocketEngineTheme
-import com.renatojobal.rocketEngine.ui.trimDecimals
 
 @ExperimentalMaterialApi
 @Composable
@@ -23,9 +32,9 @@ fun DetailScreen(sharedViewModel: SharedViewModel) {
 
     val selectedEntity = sharedViewModel.selectedEntity.observeAsState()
 
-//    EntityDetailPresenter(entity = dummyEntity)
+
     selectedEntity.value?.let{ safeEntity ->
-        EntityDetailPresenter(entity = safeEntity)
+        EntityDetailPresenter(entity = safeEntity, sharedViewModel = sharedViewModel)
     }
 
 
@@ -53,10 +62,40 @@ fun PropertyLabeledPreview() {
 }
 
 @Composable
-fun EntityDetailPresenter(entity: Entity) {
+fun EntityDetailPresenter(entity: Entity, sharedViewModel: SharedViewModel) {
+
+    val fullEntityInfo = sharedViewModel.fullEntityInfo.observeAsState()
+
+    val relatedLinks = sharedViewModel.relatedEntities.observeAsState()
+
+    val thumbnail = fullEntityInfo
+        .value?.getAsJsonArray("http://dbpedia.org/ontology/thumbnail")?.get(0)?.asJsonObject?.get("value")?.asString
+
+    val scrollState = rememberScrollState()
+
     Column(
-        modifier = Modifier.padding(12.dp)
+        modifier = Modifier
+            .padding(12.dp)
+            .scrollable(
+                state = scrollState,
+                orientation = Orientation.Vertical
+            )
     ) {
+
+        if( ! thumbnail.isNullOrEmpty()){
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(thumbnail)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = entity.uri,
+                contentScale = ContentScale.FillWidth
+            )
+        }
+
+
+
         PropertyLabeledPresenter(label = "Uri", content = entity.uri)
         Text(text = "Types:")
         entity.getTypesAsList().forEach { safeType ->
@@ -69,6 +108,23 @@ fun EntityDetailPresenter(entity: Entity) {
 
         }
 
+        Text(text = "Related links:")
+
+        LazyColumn {
+            item {
+
+            }
+        }
+
+        relatedLinks.value?.forEach { relatedLink ->
+            PropertyLabeledPresenter(label = "", content = relatedLink)
+        }
+
+
+
+
+
+
 
     }
 }
@@ -77,7 +133,7 @@ fun EntityDetailPresenter(entity: Entity) {
 @Composable
 fun EntityDetailPreview() {
     RocketEngineTheme {
-        EntityDetailPresenter(dummyEntity)
+        EntityDetailPresenter(dummyEntity, sharedViewModel = SharedViewModel())
     }
 }
 

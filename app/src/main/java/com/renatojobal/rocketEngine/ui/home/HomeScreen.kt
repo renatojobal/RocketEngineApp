@@ -157,7 +157,7 @@ fun CircularProgressPreview() {
 
 @Composable
 fun EntityChip(
-    presentingEntity: Entity,
+    presentingEntity: Entity?,
     selectedEntity: Entity?,
     onSelectedEntity: (Entity) -> Unit
 ) {
@@ -173,35 +173,41 @@ fun EntityChip(
         Modifier
             .fillMaxWidth()
     }
-
-    BoxWithConstraints(
-        modifier = itemModifier
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+    presentingEntity?.let{
+        BoxWithConstraints(
+            modifier = itemModifier
         ) {
-
             Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.Top
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
-                Text(
-                    text = (presentingEntity.thumbnail ?: "\uD83C\uDFED"),
-                    modifier = Modifier.clickable { onSelectedEntity(presentingEntity) })
-                Text(
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .clickable { onSelectedEntity(presentingEntity) },
-                    text = presentingEntity.uri
-                )
 
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Text(
+                        text = (presentingEntity.thumbnail ?: "\uD83C\uDFED"),
+                        modifier = Modifier.clickable { onSelectedEntity(presentingEntity) })
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                            .clickable { onSelectedEntity(presentingEntity) },
+                        text = presentingEntity.uri
+                    )
+
+                }
             }
+
+
+
+
         }
     }
+
 
 }
 //

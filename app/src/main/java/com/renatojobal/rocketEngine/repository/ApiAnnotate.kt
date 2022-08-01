@@ -17,14 +17,19 @@ interface ApiAnnotate {
 
     ): Call<AnnotateResponse>
 
-    @GET("spot")
-    fun spot() : Call<JsonObject>
+    @GET("rdf")
+    fun rdf(
+        @Query("text") text : String,
+        @Query("format") format : String = "json",
+        @Query("prefix") prefix : String = "fred:",
+        @Query("namespace") namespace : String = "http://www.ontologydesignpatterns.org/ont/fred/domain.owl#",
+    ) : Call<JsonObject>
 
-    @GET("candidate")
-    fun candidate() : Call<JsonObject>
+
+
     companion object {
 
-        private const val BASE_URL = "https://api.dbpedia-spotlight.org/en/"
+        private const val BASE_URL = "http://10.0.2.2:5000/"
 
         fun create() : ApiAnnotate {
             val retrofit = Retrofit.Builder()

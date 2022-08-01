@@ -25,7 +25,7 @@ class SharedViewModel(
     val selectedEntity: MutableLiveData<Entity?> = MutableLiveData(null)
 
     val fullEntityInfo: MutableLiveData<JsonObject?> = MutableLiveData(null)
-    val relatedEntities : MutableLiveData<JsonObject?> = MutableLiveData(null)
+    val relatedEntities : MutableLiveData<List<String>> = MutableLiveData(null)
 
     /**
      * Dark theme
@@ -80,6 +80,17 @@ class SharedViewModel(
                     Timber.i("Full info: $onlyTargetInfo")
                     Timber.i("Success")
                     fullEntityInfo.value = onlyTargetInfo
+
+                    val listOfAdditionalResources = mutableListOf<String>()
+                    response.body()?.asJsonObject?.keySet()?.let { keySet ->
+                        for (key in keySet){
+                            Timber.d("Additional resource = $key")
+                            listOfAdditionalResources.add(key)
+                        }
+                    }
+
+                    relatedEntities.value = listOfAdditionalResources.toList()
+
 
                 }
 
