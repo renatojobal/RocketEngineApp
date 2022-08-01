@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
-import com.renatojobal.rocketEngine.repository.AnnotateResponse
-import com.renatojobal.rocketEngine.repository.ApiAnnotate
-import com.renatojobal.rocketEngine.repository.ApiResources
-import com.renatojobal.rocketEngine.repository.Entity
+import com.renatojobal.rocketEngine.repository.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,8 +12,9 @@ import timber.log.Timber
 
 
 class SharedViewModel(
-    private val api : ApiAnnotate = ApiAnnotate.create(),
-    private val apiResources : ApiResources = ApiResources.create()
+    private val apiFlask : ApiFlask = ApiFlask.create(),
+    private val apiResources : ApiResources = ApiResources.create(),
+    private val apiSpotLight: ApiSpotLight = ApiSpotLight.create()
 ) : ViewModel() {
 
     private val _entities: MutableLiveData<List<Entity>?> = MutableLiveData(null)
@@ -26,6 +24,8 @@ class SharedViewModel(
 
     val fullEntityInfo: MutableLiveData<JsonObject?> = MutableLiveData(null)
     val relatedEntities : MutableLiveData<List<String>> = MutableLiveData(null)
+
+
 
     /**
      * Dark theme
@@ -40,10 +40,8 @@ class SharedViewModel(
      * Here we weill get the annotated text calling the api of spotlight
      */
     fun handleSearch(rawText: String){
-
-        val request = api.annotate(rawText = rawText)
-
-        request.enqueue(object : Callback<AnnotateResponse>{
+        val requestFlask = apiSpotLight.annotate(rawText = rawText)
+        requestFlask.enqueue(object : Callback<AnnotateResponse>{
             override fun onResponse(call: Call<AnnotateResponse>, response: Response<AnnotateResponse>) {
                 Timber.d("Response ${response.body().toString()}")
                 // Populate categories list
@@ -51,6 +49,22 @@ class SharedViewModel(
             }
 
             override fun onFailure(call: Call<AnnotateResponse>, t: Throwable) {
+                Timber.e(t, "Error while calling spotlight api")
+            }
+        })
+
+        val request = apiFlask.rdf(
+            text = rawText
+        )
+        request.enqueue(object : Callback<JsonObject>{
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                //Timber.d("Response ${response.body().toString()}")
+                // Populate categories list
+                val responseJSON = response.body()?.asJsonObject?.get("result_rdf")
+                _entities.value
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 Timber.e(t, "Error while calling spotlight api")
             }
         })

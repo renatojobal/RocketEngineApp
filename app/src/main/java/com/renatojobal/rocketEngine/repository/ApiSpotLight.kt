@@ -8,40 +8,34 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
-interface ApiAnnotate {
+/**
+ * https://www.dbpedia-spotlight.org/api
+ */
+interface ApiSpotLight {
+
 
     @GET("annotate")
     fun annotate(
         @Header("accept") accept : String = "application/json",
-        @Query("text") rawText: String
-
+        @Query("text") rawText : String,
     ): Call<AnnotateResponse>
-
-    @GET("rdf")
-    fun rdf(
-        @Query("text") text : String,
-        @Query("format") format : String = "json",
-        @Query("prefix") prefix : String = "fred:",
-        @Query("namespace") namespace : String = "http://www.ontologydesignpatterns.org/ont/fred/domain.owl#",
-    ) : Call<JsonObject>
 
 
 
     companion object {
 
-        private const val BASE_URL = "http://10.0.2.2:5000/"
+        private const val BASE_URL = "https://api.dbpedia-spotlight.org/en/"
 
-        fun create() : ApiAnnotate {
+        fun create() : ApiSpotLight {
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .build()
-            return retrofit.create(ApiAnnotate::class.java)
+            return retrofit.create(ApiSpotLight::class.java)
 
         }
 
 
     }
-
 
 }

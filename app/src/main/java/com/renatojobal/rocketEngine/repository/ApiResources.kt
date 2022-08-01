@@ -19,7 +19,6 @@ interface ApiResources {
     ): Call<JsonObject>
 
 
-
     companion object {
 
         private const val BASE_URL = "http://dbpedia.org/"
