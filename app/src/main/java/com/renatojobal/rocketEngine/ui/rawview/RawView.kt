@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.renatojobal.rocketEngine.SharedViewModel
+import java.net.URLEncoder
 
 
 @Composable
@@ -38,7 +39,7 @@ fun RawView(sharedViewModel: SharedViewModel) {
     val clipboardManager: ClipboardManager = LocalClipboardManager.current
     var text by remember { (mutableStateOf(targetText.toString() ?: "")) }
 
-
+    val query: String = URLEncoder.encode("\"${targetText.toString()}\"", "utf-8")
 //    // Step 1. Declare Language & Code
 //    val language = CodeLang.Kotlin
 //    val code = """
@@ -72,11 +73,11 @@ fun RawView(sharedViewModel: SharedViewModel) {
         .verticalScroll(rememberScrollState())) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data("http://10.0.2.2:5000/image_rdf?text=${text}")
+                .data("http://10.0.2.2:5000/image_rdf?rdf=${query}")
                 .crossfade(true)
                 .build(),
             contentDescription = "image",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.FillWidth
         )
 
         Button(onClick = {

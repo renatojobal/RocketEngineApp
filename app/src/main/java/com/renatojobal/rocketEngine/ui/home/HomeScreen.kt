@@ -99,15 +99,12 @@ fun HomeScreen(sharedViewModel: SharedViewModel, onRdfSelected: () -> Unit, onGr
 
 
             Row {
-                Box(modifier = Modifier.clickable {
+                Box(modifier = Modifier
+                    .padding(20.dp)
+                    .clickable {
                     onRdfSelected()
                 }) {
                     Text(text = "View RDF")
-                }
-                Box(modifier = Modifier.clickable {
-                    onGraphSelected()
-                }) {
-                    Text(text = "View Graph")
                 }
             }
 

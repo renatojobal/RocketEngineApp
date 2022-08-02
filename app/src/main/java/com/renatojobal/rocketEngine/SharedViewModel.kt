@@ -29,6 +29,9 @@ class SharedViewModel(
     private var _receivedRdf : MutableLiveData<JsonObject> = MutableLiveData(null)
     val receivedRdf : LiveData<JsonObject> = _receivedRdf
 
+    private var _receivedRdfXml : MutableLiveData<String> = MutableLiveData(null)
+    val receivedRdfXml : LiveData<String> = _receivedRdfXml
+
     private var _imageGraph : MutableLiveData<Image> = MutableLiveData(null)
     val imageGraph : LiveData<Image> = _imageGraph
 
@@ -45,8 +48,8 @@ class SharedViewModel(
      * Here we weill get the annotated text calling the api of spotlight
      */
     fun handleSearch(rawText: String){
-        val requestFlask = apiSpotLight.annotate(rawText = rawText)
-        requestFlask.enqueue(object : Callback<AnnotateResponse>{
+        val requestSpotLight = apiSpotLight.annotate(rawText = rawText)
+        requestSpotLight.enqueue(object : Callback<AnnotateResponse>{
             override fun onResponse(call: Call<AnnotateResponse>, response: Response<AnnotateResponse>) {
                 Timber.d("Response ${response.body().toString()}")
                 // Populate categories list
@@ -74,6 +77,23 @@ class SharedViewModel(
                 Timber.e(t, "Error while calling flask api")
             }
         })
+//        val requestRdfXml = apiFlask.rdf(
+//            text = rawText,
+//            format = "xml"
+//        )
+//        requestRdfXml.enqueue(object : Callback<JsonObject>{
+//            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+//                //Timber.d("Response ${response.body().toString()}")
+//                // Populate categories list
+//                _receivedRdfXml.value = response.body()?.asJsonObject
+//                Timber.d("Text")
+//
+//            }
+//
+//            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+//                Timber.e(t, "Error while calling flask api")
+//            }
+//        })
 
 //        val requestImage = apiFlask.image(
 //            text = rawText
